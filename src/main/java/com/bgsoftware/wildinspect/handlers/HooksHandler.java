@@ -8,8 +8,6 @@ import com.bgsoftware.wildinspect.hooks.ClaimsProvider_BentoBox;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_FactionsUUID;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_FactionsX;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_GriefPrevention;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_Lands;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_Lazarus;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_MassiveFactions;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_SuperiorSkyblock;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider_Towny;
@@ -95,16 +93,6 @@ public final class HooksHandler {
         if(Bukkit.getPluginManager().isPluginEnabled("Villages")){
             claimsProviders.put(ClaimsProvider.ClaimPlugin.VILLAGES, new ClaimsProvider_Villages());
             WildInspectPlugin.log(" - Using Villages as ClaimsProvider.");
-        }
-        //Checks if Lands is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("Lands")){
-            claimsProviders.put(ClaimsProvider.ClaimPlugin.LANDS, new ClaimsProvider_Lands());
-            WildInspectPlugin.log(" - Using Lands as ClaimsProvider.");
-        }
-        //Checks if Lands is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("Lazarus")){
-            claimsProviders.put(ClaimsProvider.ClaimPlugin.LAZARUS, new ClaimsProvider_Lazarus());
-            WildInspectPlugin.log(" - Using Lazarus as ClaimsProvider.");
         }
         WildInspectPlugin.log("Loading providers done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }

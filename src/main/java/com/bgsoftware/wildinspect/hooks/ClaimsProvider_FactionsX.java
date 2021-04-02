@@ -20,7 +20,7 @@ public final class ClaimsProvider_FactionsX implements ClaimsProvider {
     @Override
     public boolean hasRole(Player player, Location location, String... roles){
         FPlayer fPlayer = PlayerManager.INSTANCE.getFPlayer(player);
-        return Arrays.asList(roles).contains(fPlayer.getRole().getRoleTag().toUpperCase());
+        return fPlayer.isLeader() || Arrays.asList(roles).contains(fPlayer.getRole().getRoleTag().toUpperCase());
     }
 
     @Override

@@ -51,8 +51,6 @@ dependencies {
     compileOnly 'com.drtshock:FactionsUUID-New:latest'
     compileOnly 'net.prosavage:FactionsX:latest'
     compileOnly 'me.ryanhamshire:GriefPrevention:latest'
-    compileOnly 'me.angeschossen:Lands:latest'
-    compileOnly 'me.qiooip:Lazarus:latest'
     compileOnly 'com.massivecraft:Factions:latest'
     compileOnly 'com.massivecraft:MassiveCore:latest'
     compileOnly 'com.bgsoftware:SuperiorSkyblockAPI:latest'
