@@ -1,45 +1,29 @@
-group 'WildInspect'
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'base'
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'maven-publish'
+import org.apache.tools.ant.filters.ReplaceTokens
 
-version = "2.3.3"
-
-buildscript {
-    repositories {
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-    }
+plugins {
+    id 'java'
+    id 'idea'
+    id 'maven'
+    id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version('6.1.0')
 }
 
+group = project.property("group")
+version = project.property("version")
+sourceCompatibility = project.property("sourceversion")
+
 repositories {
-    maven { url 'https://repo.bg-software.com/repository/nms/' }
+    mavenLocal()
+    mavenCentral()
+    maven { url = 'https://repo.codemc.io/repository/nms/' }
+    maven { url = 'https://repo.codemc.io/repository/maven-public/' }
     maven { url 'https://repo.bg-software.com/repository/api/' }
     maven { url 'https://repo.bg-software.com/repository/public-libs/' }
-
-    String mavenUsername = project.hasProperty('mavenUsername') ? project.mavenUsername : System.getenv('mavenUsername');
-    String mavenPassword = project.hasProperty('mavenPassword') ? project.mavenPassword : System.getenv('mavenPassword');
-
-    if(mavenUsername != null && mavenPassword != null) {
-        maven {
-            url 'https://repo.bg-software.com/repository/private-libs/'
-            credentials {
-                username mavenUsername
-                password mavenPassword
-            }
-        }
-    }
-
 }
 
 dependencies {
     // Spigot jar
-    compileOnly "org.spigotmc:v1_8_R3-Taco:latest"
+    compileOnly 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
     // CoreProtect
     compileOnly 'net.coreprotect:CoreProtect-5:latest'
     compileOnly 'net.coreprotect:CoreProtect-6:latest'
@@ -58,25 +42,23 @@ dependencies {
     compileOnly 'com.stefthedev:Villages:latest'
 }
 
-jar {
-    processResources {
-        outputs.upToDateWhen {false}
-        eachFile { details ->
-            if (details.name.contentEquals('plugin.yml')) {
-                filter { String line ->
-                    line.replace('${project.version}', version)
-                }
-            }
-        }
-    }
+processResources {
+    filter ReplaceTokens, tokens: [
+            "project.name"       : project.property("name"),
+            "project.groupId"    : project.property("groupid"),
+            "project.artifactId" : project.property("artifactid"),
+            "project.version"    : project.property("version"),
+            "project.description": project.property("description")
+    ]
 }
 
+jar {
+    archiveFileName.set(project.property("name").toString() + "-lib.jar")
 
+}
 
 shadowJar {
-    dependsOn(jar)
-    archiveName = rootProject.name + ".jar"
-    destinationDir = file("./target/")
+    archiveFileName.set(project.property("name").toString() + "-${project.version}.jar")
     from sourceSets.getByName("main").output
     configurations = [project.configurations.getByName("runtimeClasspath")]
 }

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-public final class ClaimsProvider_SuperiorSkyblock implements ClaimsProvider{
+public final class ClaimsProvider_SuperiorSkyblock implements ClaimsProvider {
 
     private static final IslandPrivilege BUILD_PRIVILEGE = IslandPrivilege.getByName("BUILD");
 

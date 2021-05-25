@@ -3,7 +3,6 @@ package com.bgsoftware.wildinspect.hooks;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.PlayerData;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

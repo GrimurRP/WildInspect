@@ -1,7 +1,7 @@
 package com.bgsoftware.wildinspect.coreprotect;
 
 import com.bgsoftware.wildinspect.Locale;
-import com.bgsoftware.wildinspect.WildInspectPlugin;
+import com.bgsoftware.wildinspect.WildInspect;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider;
 import com.bgsoftware.wildinspect.utils.InspectPlayers;
 import com.bgsoftware.wildinspect.utils.StringUtils;
@@ -28,38 +28,38 @@ public final class CoreProtect {
     private static final Pattern DATA_LINE_PATTERN = Pattern.compile("§7(.*) §f- %s(.*) §f(.*) %s(.*)§f\\.".replace("%s", COREPROTECT_COLOR));
     private static final Pattern DATA_FOOTER_PATTERN = Pattern.compile("§fPage (.*)/(.*)\\. View older data by typing \"%s/co l <page>§f\"\\.".replace("%s", COREPROTECT_COLOR));
 
-    private final WildInspectPlugin plugin;
+    private final WildInspect plugin;
 
-    public CoreProtect(WildInspectPlugin plugin){
+    public CoreProtect(WildInspect plugin) {
         this.plugin = plugin;
     }
 
     public void performLookup(LookupType type, Player pl, Block bl, int page) {
         ClaimsProvider.ClaimPlugin claimPlugin = plugin.getHooksHandler().getRegionAt(pl, bl.getLocation());
 
-        if(claimPlugin == ClaimsProvider.ClaimPlugin.NONE){
+        if (claimPlugin == ClaimsProvider.ClaimPlugin.NONE) {
             Locale.NOT_INSIDE_CLAIM.send(pl);
             return;
         }
 
-        if(!plugin.getHooksHandler().hasRole(claimPlugin, pl, bl.getLocation(), plugin.getSettings().requiredRoles)){
+        if (!plugin.getHooksHandler().hasRole(claimPlugin, pl, bl.getLocation(), plugin.getSettings().requiredRoles)) {
             Locale.REQUIRED_ROLE.send(pl, StringUtils.format(plugin.getSettings().requiredRoles));
             return;
         }
 
-        if(InspectPlayers.isCooldown(pl)){
+        if (InspectPlayers.isCooldown(pl)) {
             DecimalFormat df = new DecimalFormat();
             df.setMaximumFractionDigits(2);
             Locale.COOLDOWN.send(pl, df.format(InspectPlayers.getTimeLeft(pl) / 1000));
             return;
         }
 
-        if(plugin.getSettings().cooldown != -1)
+        if (plugin.getSettings().cooldown != -1)
             InspectPlayers.setCooldown(pl);
 
         InspectPlayers.setBlock(pl, bl);
 
-        if(plugin.getSettings().historyLimitPage < page){
+        if (plugin.getSettings().historyLimitPage < page) {
             Locale.LIMIT_REACH.send(pl);
             return;
         }
@@ -67,23 +67,23 @@ public final class CoreProtect {
         BlockState blockState = bl.getState();
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try(Connection connection = Database.getConnection(false)){
-                if(connection == null){
+            try (Connection connection = Database.getConnection(false)) {
+                if (connection == null) {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> performLookup(type, pl, bl, page), 20L);
                     return;
                 }
 
-                try(Statement statement = connection.createStatement()){
+                try (Statement statement = connection.createStatement()) {
                     int maxPage = getMaxPage(statement, type, pl, bl, blockState);
 
-                    if(maxPage <= page){
+                    if (maxPage <= page) {
                         Locale.LIMIT_REACH.send(pl);
                         return;
                     }
 
                     String[] resultLines;
 
-                    switch(type){
+                    switch (type) {
                         case INTERACTION_LOOKUP:
                             resultLines = CoreProtectHook.performInteractLookup(statement, pl, bl, page);
                             break;
@@ -102,9 +102,9 @@ public final class CoreProtect {
                     StringBuilder message = new StringBuilder();
                     boolean empty = true;
 
-                    for(String line : resultLines){
-                        if((matcher = NO_DATA_PATTERN.matcher(line)).matches()){
-                            switch(matcher.group(1)){
+                    for (String line : resultLines) {
+                        if ((matcher = NO_DATA_PATTERN.matcher(line)).matches()) {
+                            switch (matcher.group(1)) {
                                 case "player interactions":
                                     message.append("\n").append(Locale.NO_BLOCK_INTERACTIONS.getMessage(matcher.group(2)));
                                     break;
@@ -115,24 +115,21 @@ public final class CoreProtect {
                                     message.append("\n").append(Locale.NO_CONTAINER_TRANSACTIONS.getMessage(matcher.group(2)));
                                     break;
                             }
-                        }
-                        else if((matcher = DATA_HEADER_PATTERN.matcher(line)).matches()){
+                        } else if ((matcher = DATA_HEADER_PATTERN.matcher(line)).matches()) {
                             message.append("\n").append(Locale.INSPECT_DATA_HEADER.getMessage(matcher.group(2), matcher.group(3), matcher.group(4)));
-                        }
-                        else if((matcher = DATA_LINE_PATTERN.matcher(line)).matches()){
-                            if(plugin.getSettings().hideOps) {
+                        } else if ((matcher = DATA_LINE_PATTERN.matcher(line)).matches()) {
+                            if (plugin.getSettings().hideOps) {
                                 //noinspection deprecation
                                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(matcher.group(2));
                                 if (offlinePlayer != null && offlinePlayer.isOp())
                                     continue;
                             }
                             double days = Double.parseDouble(matcher.group(1).split("/")[0].replace(",", ".")) / 24;
-                            if(plugin.getSettings().historyLimitDate >= days) {
+                            if (plugin.getSettings().historyLimitDate >= days) {
                                 empty = false;
                                 message.append("\n").append(Locale.INSPECT_DATA_ROW.getMessage(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4)));
                             }
-                        }
-                        else if((matcher = DATA_FOOTER_PATTERN.matcher(line)).matches()){
+                        } else if ((matcher = DATA_FOOTER_PATTERN.matcher(line)).matches()) {
                             int linePage = Integer.parseInt(matcher.group(1));
                             message.append("\n").append(Locale.INSPECT_DATA_FOOTER.getMessage(Math.max(linePage, 1),
                                     Math.min(maxPage - 1, plugin.getSettings().historyLimitPage)));
@@ -141,19 +138,19 @@ public final class CoreProtect {
 
                     pl.sendMessage(empty ? Locale.NO_BLOCK_DATA.getMessage("that page") : message.substring(1));
                 }
-            } catch(SQLException ex){
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         });
     }
 
-    private int getMaxPage(Statement statement, LookupType type, Player pl, Block bl, BlockState blockState){
+    private int getMaxPage(Statement statement, LookupType type, Player pl, Block bl, BlockState blockState) {
         String[] resultLines;
 
         int maxPage = 0;
 
-        while(true) {
-            switch(type){
+        while (true) {
+            switch (type) {
                 case INTERACTION_LOOKUP:
                     resultLines = CoreProtectHook.performInteractLookup(statement, pl, bl, maxPage);
                     break;
@@ -173,7 +170,7 @@ public final class CoreProtect {
             for (String line : resultLines) {
                 if ((matcher = DATA_LINE_PATTERN.matcher(line)).matches()) {
                     double days = Double.parseDouble(matcher.group(1).split("/")[0].replace(",", ".")) / 24;
-                    if(plugin.getSettings().historyLimitDate >= days) {
+                    if (plugin.getSettings().historyLimitDate >= days) {
                         amountOfRows++;
                     }
                 }
@@ -187,7 +184,7 @@ public final class CoreProtect {
         }
     }
 
-    private static boolean is116OrAbove(){
+    private static boolean is116OrAbove() {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         version = version.substring(1).replace("_", "").replace("R", "");
         return Integer.parseInt(version) >= 1160;

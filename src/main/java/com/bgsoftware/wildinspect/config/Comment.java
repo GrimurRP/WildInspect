@@ -1,10 +1,6 @@
 package com.bgsoftware.wildinspect.config;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Repeatable(Comment.List.class)
 @Target({ElementType.TYPE, ElementType.FIELD})
@@ -15,7 +11,7 @@ public @interface Comment {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.TYPE, ElementType.FIELD})
-    @interface List{
+    @interface List {
         Comment[] value();
     }
 

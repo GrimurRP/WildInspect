@@ -5,7 +5,6 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.perms.Role;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -17,9 +16,10 @@ public final class ClaimsProvider_FactionsUUID implements ClaimsProvider {
     private static Method getRoleMethod;
 
     static {
-        try{
+        try {
             getRoleMethod = FPlayer.class.getMethod("getRole");
-        }catch(Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -28,18 +28,18 @@ public final class ClaimsProvider_FactionsUUID implements ClaimsProvider {
     }
 
     @Override
-    public boolean hasRole(Player player, Location location, String... roles){
+    public boolean hasRole(Player player, Location location, String... roles) {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         try {
             Role role = (Role) getRoleMethod.invoke(fPlayer);
             return Arrays.asList(roles).contains(role.name());
-        }catch(Throwable ex){
+        } catch (Throwable ex) {
             return Arrays.asList(roles).contains(fPlayer.getRole().name());
         }
     }
 
     @Override
-    public boolean hasRegionAccess(Player player, Location location){
+    public boolean hasRegionAccess(Player player, Location location) {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         return fPlayer.isAdminBypassing() ||
                 (fPlayer.hasFaction() && fPlayer.getFaction().equals(Board.getInstance().getFactionAt(new FLocation(location))));

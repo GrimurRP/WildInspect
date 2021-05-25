@@ -3,18 +3,18 @@ package com.bgsoftware.wildinspect;
 import com.bgsoftware.wildinspect.command.InspectCommand;
 import com.bgsoftware.wildinspect.command.ReloadCommand;
 import com.bgsoftware.wildinspect.coreprotect.CoreProtect;
-import com.bgsoftware.wildinspect.listeners.PlayerListener;
-import com.bgsoftware.wildinspect.metrics.Metrics;
-import com.bgsoftware.wildinspect.handlers.SettingsHandler;
 import com.bgsoftware.wildinspect.handlers.HooksHandler;
+import com.bgsoftware.wildinspect.handlers.SettingsHandler;
 import com.bgsoftware.wildinspect.listeners.BlockListener;
-
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class WildInspectPlugin extends JavaPlugin {
+public final class WildInspect extends JavaPlugin {
 
-    private static WildInspectPlugin plugin;
+    private static WildInspect plugin;
 
     private SettingsHandler settingsHandler;
     private HooksHandler hooksHandler;
@@ -24,17 +24,14 @@ public final class WildInspectPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        new Metrics(this);
 
         Bukkit.getScheduler().runTask(this, () -> {
             log("******** ENABLE START ********");
 
             getServer().getPluginManager().registerEvents(new InspectCommand(this), this);
             getServer().getPluginManager().registerEvents(new BlockListener(this), this);
-            getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 
-            getCommand("wildinspect").setExecutor(new ReloadCommand());
-            getCommand("wildinspect").setTabCompleter(new ReloadCommand());
+            registerCommand("wildinspect", new ReloadCommand());
 
             settingsHandler = new SettingsHandler(this);
             hooksHandler = new HooksHandler(this);
@@ -42,22 +39,24 @@ public final class WildInspectPlugin extends JavaPlugin {
 
             Locale.reload();
 
-            if(Updater.isOutdated()) {
-                log("");
-                log("A new version is available (v" + Updater.getLatestVersion() + ")!");
-                log("Version's description: \"" + Updater.getVersionDescription() + "\"");
-                log("");
-            }
-
             log("******** ENABLE DONE ********");
         });
+    }
+
+    private void registerCommand(String command, CommandExecutor executor) {
+        PluginCommand cmd = this.getCommand(command);
+        if (cmd != null) {
+            cmd.setExecutor(executor);
+            if (executor instanceof TabCompleter)
+                cmd.setTabCompleter((TabCompleter) executor);
+        }
     }
 
     public SettingsHandler getSettings() {
         return settingsHandler;
     }
 
-    public void setSettings(SettingsHandler settingsHandler){
+    public void setSettings(SettingsHandler settingsHandler) {
         this.settingsHandler = settingsHandler;
     }
 
@@ -69,11 +68,11 @@ public final class WildInspectPlugin extends JavaPlugin {
         return coreProtect;
     }
 
-    public static void log(String message){
+    public static void log(String message) {
         plugin.getLogger().info(message);
     }
 
-    public static WildInspectPlugin getPlugin(){
+    public static WildInspect getPlugin() {
         return plugin;
     }
 

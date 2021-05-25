@@ -4,36 +4,22 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public final class CommentedConfiguration extends YamlConfiguration{
+public final class CommentedConfiguration extends YamlConfiguration {
 
     private Class commentsClass;
 
-    public CommentedConfiguration(Class commentsClass, File file){
+    public CommentedConfiguration(Class commentsClass, File file) {
         this.commentsClass = commentsClass;
         load(file);
     }
 
-    public void resetYamlFile(Plugin plugin, String resourceName){
+    public void resetYamlFile(Plugin plugin, String resourceName) {
         File configFile = new File(plugin.getDataFolder(), resourceName);
         plugin.saveResource(resourceName, true);
         CommentedConfiguration destination = new CommentedConfiguration(commentsClass, configFile);
@@ -43,7 +29,8 @@ public final class CommentedConfiguration extends YamlConfiguration{
         destination.save(configFile);
         load(configFile);
     }
-    private void copyConfigurationSection(ConfigurationSection source, ConfigurationSection dest){
+
+    private void copyConfigurationSection(ConfigurationSection source, ConfigurationSection dest) {
         for (String key : dest.getKeys(false)) {
             if (source.contains(key)) {
                 if (source.isConfigurationSection(key) && dest.contains(key)) {
@@ -56,21 +43,21 @@ public final class CommentedConfiguration extends YamlConfiguration{
     }
 
     @Override
-    public void load(File file){
+    public void load(File file) {
         try {
             super.load(file);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public void save(String file){
+    public void save(String file) {
         save(new File(file));
     }
 
     @Override
-    public void save(File file){
+    public void save(File file) {
         Map<String, String> comments = new HashMap<>();
         init(comments);
 
@@ -97,13 +84,13 @@ public final class CommentedConfiguration extends YamlConfiguration{
             // The depth of the path. (number of words separated by periods - 1)
             int depth = 0;
 
-            if(comments.containsKey("")){
+            if (comments.containsKey("")) {
                 newContents.append(comments.get("")).append(System.getProperty("line.separator"));
             }
 
             // Loop through the config lines
             for (String line : yamlContents) {
-                if(line.startsWith("#"))
+                if (line.startsWith("#"))
                     continue;
 
                 // If the line is a node (and not something like a list value)
@@ -205,7 +192,7 @@ public final class CommentedConfiguration extends YamlConfiguration{
         }
     }
 
-    private void init(Map<String, String> comments){
+    private void init(Map<String, String> comments) {
         try {
             for (Field field : commentsClass.getDeclaredFields()) {
                 List<Comment> commentList = new ArrayList<>();
@@ -218,7 +205,7 @@ public final class CommentedConfiguration extends YamlConfiguration{
                     }
                 }
 
-                if(!commentList.isEmpty()){
+                if (!commentList.isEmpty()) {
                     String pathName = (String) field.get(this);
                     String whiteSpaces = getWhiteSpaces(pathName);
                     StringBuilder comment = new StringBuilder();
@@ -239,7 +226,7 @@ public final class CommentedConfiguration extends YamlConfiguration{
                     comments.put(pathName, comment.substring(0, comment.length() - 2));
                 }
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -247,8 +234,8 @@ public final class CommentedConfiguration extends YamlConfiguration{
     private String getWhiteSpaces(String pathName) {
         StringBuilder whiteSpaces = new StringBuilder();
 
-        for(int i = 0; i < pathName.length(); i++){
-            if(pathName.charAt(i) == '.'){
+        for (int i = 0; i < pathName.length(); i++) {
+            if (pathName.charAt(i) == '.') {
                 whiteSpaces.append("  ");
             }
         }
@@ -281,7 +268,7 @@ public final class CommentedConfiguration extends YamlConfiguration{
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void stringToFile(String source, File file) {
         try {
-            if(file.exists())
+            if (file.exists())
                 file.delete();
 
             file.getParentFile().mkdirs();

@@ -1,6 +1,6 @@
 package com.bgsoftware.wildinspect.coreprotect;
 
-public enum LookupType{
+public enum LookupType {
 
     INTERACTION_LOOKUP,
     BLOCK_LOOKUP,

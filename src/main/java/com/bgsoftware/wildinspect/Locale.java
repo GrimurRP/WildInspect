@@ -32,14 +32,14 @@ public final class Locale {
     public static Locale SPECIFY_PAGE = new Locale("SPECIFY_PAGE");
 
 
-    private Locale(String identifier){
+    private Locale(String identifier) {
         localeMap.put(identifier, this);
     }
 
     private String message;
 
-    public String getMessage(Object... objects){
-        if(message != null && !message.isEmpty()) {
+    public String getMessage(Object... objects) {
+        if (message != null && !message.isEmpty()) {
             String msg = message;
 
             for (int i = 0; i < objects.length; i++)
@@ -51,35 +51,35 @@ public final class Locale {
         return null;
     }
 
-    public void send(CommandSender sender, Object... objects){
+    public void send(CommandSender sender, Object... objects) {
         String message = getMessage(objects);
-        if(message != null && sender != null)
+        if (message != null && sender != null)
             sender.sendMessage(message);
     }
 
-    private void setMessage(String message){
+    private void setMessage(String message) {
         this.message = message;
     }
 
-    public static void reload(){
-        WildInspectPlugin.log("Loading messages started...");
+    public static void reload() {
+        WildInspect.log("Loading messages started...");
         long startTime = System.currentTimeMillis();
         int messagesAmount = 0;
-        File file = new File(WildInspectPlugin.getPlugin().getDataFolder(), "lang.yml");
+        File file = new File(WildInspect.getPlugin().getDataFolder(), "lang.yml");
 
-        if(!file.exists())
-            WildInspectPlugin.getPlugin().saveResource("lang.yml", false);
+        if (!file.exists())
+            WildInspect.getPlugin().saveResource("lang.yml", false);
 
         CommentedConfiguration cfg = new CommentedConfiguration(LangComments.class, file);
-        cfg.resetYamlFile(WildInspectPlugin.getPlugin(), "lang.yml");
+        cfg.resetYamlFile(WildInspect.getPlugin(), "lang.yml");
 
-        for(String identifier : localeMap.keySet()){
+        for (String identifier : localeMap.keySet()) {
             localeMap.get(identifier).setMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString(identifier, "")));
             messagesAmount++;
         }
 
-        WildInspectPlugin.log(" - Found " + messagesAmount + " messages in lang.yml.");
-        WildInspectPlugin.log("Loading messages done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
+        WildInspect.log(" - Found " + messagesAmount + " messages in lang.yml.");
+        WildInspect.log("Loading messages done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
 
 }

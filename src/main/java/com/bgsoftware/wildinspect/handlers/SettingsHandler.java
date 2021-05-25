@@ -1,6 +1,6 @@
 package com.bgsoftware.wildinspect.handlers;
 
-import com.bgsoftware.wildinspect.WildInspectPlugin;
+import com.bgsoftware.wildinspect.WildInspect;
 import com.bgsoftware.wildinspect.config.CommentedConfiguration;
 import com.bgsoftware.wildinspect.config.ConfigComments;
 
@@ -19,23 +19,23 @@ public final class SettingsHandler {
     public final boolean hideOps;
     public final String inspectPermission;
 
-    public SettingsHandler(WildInspectPlugin plugin){
-        WildInspectPlugin.log("Loading configuration started...");
+    public SettingsHandler(WildInspect plugin) {
+        WildInspect.log("Loading configuration started...");
         long startTime = System.currentTimeMillis();
         File file = new File(plugin.getDataFolder(), "config.yml");
 
-        if(!file.exists())
+        if (!file.exists())
             plugin.saveResource("config.yml", false);
 
         CommentedConfiguration cfg = new CommentedConfiguration(ConfigComments.class, file);
 
-        if(cfg.contains("factions.required-role")) {
+        if (cfg.contains("factions.required-role")) {
             //noinspection all
             cfg.set("required-roles", Arrays.asList(cfg.getString("factions.required-role")));
             cfg.set("factions", null);
             cfg.save(file);
         }
-        if(cfg.contains("command")) {
+        if (cfg.contains("command")) {
             //noinspection all
             cfg.set("commands", Arrays.asList(cfg.getString("command")));
             cfg.set("command", null);
@@ -52,12 +52,12 @@ public final class SettingsHandler {
         hideOps = cfg.getBoolean("hide-ops", true);
         inspectPermission = cfg.getString("inspect-permission", "");
 
-        WildInspectPlugin.log(" - Found " + commands.size() + " commands in config.yml.");
-        WildInspectPlugin.log("Loading configuration done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
+        WildInspect.log(" - Found " + commands.size() + " commands in config.yml.");
+        WildInspect.log("Loading configuration done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
 
-    public static void reload(){
-        WildInspectPlugin plugin = WildInspectPlugin.getPlugin();
+    public static void reload() {
+        WildInspect plugin = WildInspect.getPlugin();
         plugin.setSettings(new SettingsHandler(plugin));
     }
 

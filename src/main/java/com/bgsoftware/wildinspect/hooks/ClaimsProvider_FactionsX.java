@@ -18,13 +18,13 @@ public final class ClaimsProvider_FactionsX implements ClaimsProvider {
     }
 
     @Override
-    public boolean hasRole(Player player, Location location, String... roles){
+    public boolean hasRole(Player player, Location location, String... roles) {
         FPlayer fPlayer = PlayerManager.INSTANCE.getFPlayer(player);
         return fPlayer.isLeader() || Arrays.asList(roles).contains(fPlayer.getRole().getRoleTag().toUpperCase());
     }
 
     @Override
-    public boolean hasRegionAccess(Player player, Location location){
+    public boolean hasRegionAccess(Player player, Location location) {
         FPlayer fPlayer = PlayerManager.INSTANCE.getFPlayer(player);
         Faction faction = GridManager.INSTANCE.getFactionAt(FactionsKt.getFLocation(location));
         return fPlayer.getInBypass() || (fPlayer.hasFaction() && fPlayer.getFaction().equals(faction));

@@ -1,17 +1,7 @@
 package com.bgsoftware.wildinspect.handlers;
 
-import com.bgsoftware.wildinspect.WildInspectPlugin;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_ASkyBlock;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_AcidIsland;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_BentoBox;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_FactionsUUID;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_FactionsX;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_GriefPrevention;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_MassiveFactions;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_SuperiorSkyblock;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_Towny;
-import com.bgsoftware.wildinspect.hooks.ClaimsProvider_Villages;
+import com.bgsoftware.wildinspect.WildInspect;
+import com.bgsoftware.wildinspect.hooks.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,7 +13,7 @@ public final class HooksHandler {
 
     private final EnumMap<ClaimsProvider.ClaimPlugin, ClaimsProvider> claimsProviders = new EnumMap<>(ClaimsProvider.ClaimPlugin.class);
 
-    public HooksHandler(WildInspectPlugin plugin){
+    public HooksHandler(WildInspect plugin) {
         Bukkit.getScheduler().runTask(plugin, this::loadHookups);
     }
 
@@ -33,68 +23,68 @@ public final class HooksHandler {
     }
 
     public ClaimsProvider.ClaimPlugin getRegionAt(Player player, Location location) {
-        for(Map.Entry<ClaimsProvider.ClaimPlugin, ClaimsProvider> entry : claimsProviders.entrySet()) {
-            if(entry.getValue().hasRegionAccess(player, location))
+        for (Map.Entry<ClaimsProvider.ClaimPlugin, ClaimsProvider> entry : claimsProviders.entrySet()) {
+            if (entry.getValue().hasRegionAccess(player, location))
                 return entry.getKey();
         }
 
         return claimsProviders.isEmpty() ? ClaimsProvider.ClaimPlugin.DEFAULT : ClaimsProvider.ClaimPlugin.NONE;
     }
 
-    private void loadHookups(){
-        WildInspectPlugin.log("Loading providers started...");
+    private void loadHookups() {
+        WildInspect.log("Loading providers started...");
         long startTime = System.currentTimeMillis();
         //Checks if AcidIsland is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("AcidIsland")){
+        if (Bukkit.getPluginManager().isPluginEnabled("AcidIsland")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.ACID_ISLAND, new ClaimsProvider_AcidIsland());
-            WildInspectPlugin.log(" - Using AcidIsland as ClaimsProvider.");
+            WildInspect.log(" - Using AcidIsland as ClaimsProvider.");
         }
         //Checks if ASkyBlock is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("ASkyBlock")){
+        if (Bukkit.getPluginManager().isPluginEnabled("ASkyBlock")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.ASKYBLOCK, new ClaimsProvider_ASkyBlock());
-            WildInspectPlugin.log(" - Using ASkyBlock as ClaimsProvider.");
+            WildInspect.log(" - Using ASkyBlock as ClaimsProvider.");
         }
         //Checks if BentoBox is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("BentoBox")){
+        if (Bukkit.getPluginManager().isPluginEnabled("BentoBox")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.BENTOBOX, new ClaimsProvider_BentoBox());
-            WildInspectPlugin.log(" - Using BentoBox as ClaimsProvider.");
+            WildInspect.log(" - Using BentoBox as ClaimsProvider.");
         }
         //Checks if Factions is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("Factions")){
-            if(!Bukkit.getPluginManager().getPlugin("Factions").getDescription().getAuthors().contains("drtshock")){
+        if (Bukkit.getPluginManager().isPluginEnabled("Factions")) {
+            if (!Bukkit.getPluginManager().getPlugin("Factions").getDescription().getAuthors().contains("drtshock")) {
                 claimsProviders.put(ClaimsProvider.ClaimPlugin.MASSIVE_FACTIONS, new ClaimsProvider_MassiveFactions());
-                WildInspectPlugin.log(" - Using MassiveFactions as ClaimsProvider.");
-            }else {
+                WildInspect.log(" - Using MassiveFactions as ClaimsProvider.");
+            } else {
                 claimsProviders.put(ClaimsProvider.ClaimPlugin.FACTIONSUUID, new ClaimsProvider_FactionsUUID());
-                WildInspectPlugin.log(" - Using FactionsUUID as ClaimsProvider.");
+                WildInspect.log(" - Using FactionsUUID as ClaimsProvider.");
             }
         }
         //Checks if FactionsX is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("FactionsX")){
+        if (Bukkit.getPluginManager().isPluginEnabled("FactionsX")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.FACTIONSX, new ClaimsProvider_FactionsX());
-            WildInspectPlugin.log(" - Using FactionsX as ClaimsProvider.");
+            WildInspect.log(" - Using FactionsX as ClaimsProvider.");
         }
         //Checks if GriefPrevention is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")){
+        if (Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.GRIEF_PREVENTION, new ClaimsProvider_GriefPrevention());
-            WildInspectPlugin.log(" - Using GriefPrevention as ClaimsProvider.");
+            WildInspect.log(" - Using GriefPrevention as ClaimsProvider.");
         }
         //Checks if SuperiorSkyblock is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("SuperiorSkyblock2")){
+        if (Bukkit.getPluginManager().isPluginEnabled("SuperiorSkyblock2")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.SUPERIOR_SKYBLOCK, new ClaimsProvider_SuperiorSkyblock());
-            WildInspectPlugin.log(" - Using SuperiorSkyblock as ClaimsProvider.");
+            WildInspect.log(" - Using SuperiorSkyblock as ClaimsProvider.");
         }
         //Checks if Towny is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("Towny")){
+        if (Bukkit.getPluginManager().isPluginEnabled("Towny")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.TOWNY, new ClaimsProvider_Towny());
-            WildInspectPlugin.log(" - Using Towny as ClaimsProvider.");
+            WildInspect.log(" - Using Towny as ClaimsProvider.");
         }
         //Checks if Villages is installed
-        if(Bukkit.getPluginManager().isPluginEnabled("Villages")){
+        if (Bukkit.getPluginManager().isPluginEnabled("Villages")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.VILLAGES, new ClaimsProvider_Villages());
-            WildInspectPlugin.log(" - Using Villages as ClaimsProvider.");
+            WildInspect.log(" - Using Villages as ClaimsProvider.");
         }
-        WildInspectPlugin.log("Loading providers done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
+        WildInspect.log("Loading providers done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
 
 }
