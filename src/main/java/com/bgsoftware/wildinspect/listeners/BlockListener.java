@@ -8,8 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
-@SuppressWarnings("unused")
 public final class BlockListener implements Listener {
 
     private WildInspect plugin;
@@ -22,12 +22,11 @@ public final class BlockListener implements Listener {
     public void onBlockClick(PlayerInteractEvent e) {
         if (!InspectPlayers.isInspectEnabled(e.getPlayer()))
             return;
-
-        if (isOffhand(e))
+        if (WildInspect.getServerVersion() > 8 && e.getHand() == EquipmentSlot.OFF_HAND)
             return;
 
         e.setCancelled(true);
-
+        if (e.getClickedBlock() == null) return;
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
             plugin.getCoreProtect().performLookup(LookupType.BLOCK_LOOKUP, e.getPlayer(), e.getClickedBlock(), 0);
             InspectPlayers.setClickMode(e.getPlayer(), Action.LEFT_CLICK_BLOCK);
@@ -43,14 +42,6 @@ public final class BlockListener implements Listener {
                 InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             }
         }
-    }
-
-    private boolean isOffhand(PlayerInteractEvent event) {
-        try {
-            return event.getClass().getMethod("getHand").invoke(event).toString().equals("OFF_HAND");
-        } catch (Throwable ignored) {
-        }
-        return false;
     }
 
 }

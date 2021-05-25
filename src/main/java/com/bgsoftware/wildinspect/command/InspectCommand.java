@@ -46,8 +46,9 @@ public final class InspectCommand implements Listener {
         String[] args = e.getMessage().replace(label + " ", "").split(" ");
         Player pl = e.getPlayer();
 
-        if (!plugin.getSettings().inspectPermission.isEmpty() && !
-                e.getPlayer().hasPermission(plugin.getSettings().inspectPermission)) {
+        if (plugin.getSettings().inspectPermission != null
+                && !plugin.getSettings().inspectPermission.isEmpty()
+                && !e.getPlayer().hasPermission(plugin.getSettings().inspectPermission)) {
             Locale.NO_PERMISSION.send(e.getPlayer());
             return;
         }
@@ -94,11 +95,10 @@ public final class InspectCommand implements Listener {
             } else if (clickMode == Action.RIGHT_CLICK_BLOCK) {
                 if (ItemUtils.isContainer(bl.getType())) {
                     plugin.getCoreProtect().performLookup(LookupType.CHEST_TRANSACTIONS, pl, bl, page);
-                    InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
                 } else {
                     plugin.getCoreProtect().performLookup(LookupType.INTERACTION_LOOKUP, pl, bl, page);
-                    InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
                 }
+                InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             }
 
             return;

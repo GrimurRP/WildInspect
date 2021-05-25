@@ -19,8 +19,6 @@ public interface ClaimsProvider {
         FACTIONSUUID,
         FACTIONSX,
         GRIEF_PREVENTION,
-        LANDS,
-        LAZARUS,
         MASSIVE_FACTIONS,
         SUPERIOR_SKYBLOCK,
         TOWNY,

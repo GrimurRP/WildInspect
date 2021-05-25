@@ -22,12 +22,16 @@ public final class WildInspect extends JavaPlugin {
 
     private CoreProtect coreProtect;
 
+    public static int ver;
+
     @Override
     public void onEnable() {
         plugin = this;
 
         Bukkit.getScheduler().runTask(this, () -> {
             log("******** ENABLE START ********");
+
+            checkServerVersion();
 
             registerListeners(new InspectCommand(this), new BlockListener(this));
 
@@ -61,6 +65,17 @@ public final class WildInspect extends JavaPlugin {
                 ex.printStackTrace();
             }
         }
+    }
+
+    private void checkServerVersion() {
+        ver = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName()
+                .replace(".", ",").split(",")[3]
+                .replace("1_", "").substring(1)
+                .replaceAll("_R\\d", ""));
+    }
+
+    public static int getServerVersion() {
+        return ver;
     }
 
     public SettingsHandler getSettings() {
