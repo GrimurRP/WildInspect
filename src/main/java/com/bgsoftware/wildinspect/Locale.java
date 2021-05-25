@@ -65,13 +65,13 @@ public final class Locale {
         WildInspect.log("Loading messages started...");
         long startTime = System.currentTimeMillis();
         int messagesAmount = 0;
-        File file = new File(WildInspect.getPlugin().getDataFolder(), "lang.yml");
+        File file = new File(WildInspect.getInstance().getDataFolder(), "lang.yml");
 
         if (!file.exists())
-            WildInspect.getPlugin().saveResource("lang.yml", false);
+            WildInspect.getInstance().saveResource("lang.yml", false);
 
         CommentedConfiguration cfg = new CommentedConfiguration(LangComments.class, file);
-        cfg.resetYamlFile(WildInspect.getPlugin(), "lang.yml");
+        cfg.resetYamlFile(WildInspect.getInstance(), "lang.yml");
 
         for (String identifier : localeMap.keySet()) {
             localeMap.get(identifier).setMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString(identifier, "")));

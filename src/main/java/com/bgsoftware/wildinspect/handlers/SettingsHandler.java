@@ -57,7 +57,7 @@ public final class SettingsHandler {
     }
 
     public static void reload() {
-        WildInspect plugin = WildInspect.getPlugin();
+        WildInspect plugin = WildInspect.getInstance();
         plugin.setSettings(new SettingsHandler(plugin));
     }
 

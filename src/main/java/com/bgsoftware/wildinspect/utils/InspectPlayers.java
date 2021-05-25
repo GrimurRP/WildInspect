@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public final class InspectPlayers {
 
-    private static final WildInspect plugin = WildInspect.getPlugin();
+    private static final WildInspect plugin = WildInspect.getInstance();
 
     private static final Map<UUID, Block> inspectModePlayers = new HashMap<>();
     private static final Map<UUID, Action> inspectModeClickMode = new HashMap<>();

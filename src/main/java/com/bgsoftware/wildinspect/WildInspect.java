@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WildInspect extends JavaPlugin {
@@ -28,8 +29,7 @@ public final class WildInspect extends JavaPlugin {
         Bukkit.getScheduler().runTask(this, () -> {
             log("******** ENABLE START ********");
 
-            getServer().getPluginManager().registerEvents(new InspectCommand(this), this);
-            getServer().getPluginManager().registerEvents(new BlockListener(this), this);
+            registerListeners(new InspectCommand(this), new BlockListener(this));
 
             registerCommand("wildinspect", new ReloadCommand());
 
@@ -49,6 +49,17 @@ public final class WildInspect extends JavaPlugin {
             cmd.setExecutor(executor);
             if (executor instanceof TabCompleter)
                 cmd.setTabCompleter((TabCompleter) executor);
+        }
+    }
+
+    public void registerListeners(Listener... listeners) {
+        for (Listener listener : listeners) {
+            try {
+                getServer().getPluginManager().registerEvents(listener, this);
+            } catch (Exception ex) {
+                log("Error while registering " + listener.getClass().getName());
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -72,7 +83,7 @@ public final class WildInspect extends JavaPlugin {
         plugin.getLogger().info(message);
     }
 
-    public static WildInspect getPlugin() {
+    public static WildInspect getInstance() {
         return plugin;
     }
 
