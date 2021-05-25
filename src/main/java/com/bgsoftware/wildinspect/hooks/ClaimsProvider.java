@@ -23,6 +23,7 @@ public interface ClaimsProvider {
         SUPERIOR_SKYBLOCK,
         TOWNY,
         VILLAGES,
+        PLOTSQUARED,
 
         NONE,
         DEFAULT

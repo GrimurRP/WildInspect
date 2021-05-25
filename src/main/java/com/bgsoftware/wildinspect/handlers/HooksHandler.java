@@ -64,6 +64,16 @@ public final class HooksHandler {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.FACTIONSX, new ClaimsProvider_FactionsX());
             WildInspect.log(" - Using FactionsX as ClaimsProvider.");
         }
+        //Checks if Towny is installed
+        if (Bukkit.getPluginManager().isPluginEnabled("Towny")) {
+            claimsProviders.put(ClaimsProvider.ClaimPlugin.TOWNY, new ClaimsProvider_Towny());
+            WildInspect.log(" - Using Towny as ClaimsProvider.");
+        }
+        //Checks if PlotSquared is installed
+        if (Bukkit.getPluginManager().isPluginEnabled("PlotSquared")) {
+            claimsProviders.put(ClaimsProvider.ClaimPlugin.PLOTSQUARED, new ClaimsProvider_PlotSquared());
+            WildInspect.log(" - Using PlotSquared as ClaimsProvider.");
+        }
         //Checks if GriefPrevention is installed
         if (Bukkit.getPluginManager().isPluginEnabled("GriefPrevention")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.GRIEF_PREVENTION, new ClaimsProvider_GriefPrevention());
@@ -73,11 +83,6 @@ public final class HooksHandler {
         if (Bukkit.getPluginManager().isPluginEnabled("SuperiorSkyblock2")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.SUPERIOR_SKYBLOCK, new ClaimsProvider_SuperiorSkyblock());
             WildInspect.log(" - Using SuperiorSkyblock as ClaimsProvider.");
-        }
-        //Checks if Towny is installed
-        if (Bukkit.getPluginManager().isPluginEnabled("Towny")) {
-            claimsProviders.put(ClaimsProvider.ClaimPlugin.TOWNY, new ClaimsProvider_Towny());
-            WildInspect.log(" - Using Towny as ClaimsProvider.");
         }
         //Checks if Villages is installed
         if (Bukkit.getPluginManager().isPluginEnabled("Villages")) {

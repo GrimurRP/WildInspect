@@ -11,12 +11,14 @@ plugins {
 group = project.property("group")
 version = project.property("version")
 sourceCompatibility = project.property("sourceversion")
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven { url = 'https://repo.codemc.io/repository/nms/' }
     maven { url = 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url = 'https://mvn.intellectualsites.com/content/groups/public/' }
     maven { url 'https://repo.bg-software.com/repository/api/' }
     maven { url 'https://repo.bg-software.com/repository/public-libs/' }
 }
@@ -40,6 +42,7 @@ dependencies {
     compileOnly 'com.bgsoftware:SuperiorSkyblockAPI:latest'
     compileOnly 'com.palmergames:Towny:latest'
     compileOnly 'com.stefthedev:Villages:latest'
+    compileOnly 'com.plotsquared:PlotSquared-Core:5.13.3'
 }
 
 processResources {
@@ -54,7 +57,6 @@ processResources {
 
 jar {
     archiveFileName.set(project.property("name").toString() + "-lib.jar")
-
 }
 
 shadowJar {
