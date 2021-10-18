@@ -6,11 +6,13 @@ import com.bgsoftware.wildinspect.coreprotect.CoreProtect;
 import com.bgsoftware.wildinspect.handlers.HooksHandler;
 import com.bgsoftware.wildinspect.handlers.SettingsHandler;
 import com.bgsoftware.wildinspect.listeners.BlockListener;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WildInspect extends JavaPlugin {
@@ -32,6 +34,7 @@ public final class WildInspect extends JavaPlugin {
             log("******** ENABLE START ********");
 
             checkServerVersion();
+            initAPI();
 
             registerListeners(new InspectCommand(this), new BlockListener(this));
 
@@ -93,6 +96,21 @@ public final class WildInspect extends JavaPlugin {
     public CoreProtect getCoreProtect() {
         return coreProtect;
     }
+
+    private CoreProtectAPI cpAPI =null;
+
+    public CoreProtectAPI getCoreProtectAPI() {
+        return cpAPI;
+    }
+    public void initAPI() {
+        Plugin cp = getServer().getPluginManager().getPlugin("CoreProtect");
+        // Check that CoreProtect is loaded
+        if (cp == null || !(cp instanceof net.coreprotect.CoreProtect)) return;
+        // Check that the API is enabled
+        cpAPI = ((net.coreprotect.CoreProtect) cp).getAPI();
+        if (!cpAPI.isEnabled()) cpAPI = null;
+    }
+
 
     public static void log(String message) {
         plugin.getLogger().info(message);

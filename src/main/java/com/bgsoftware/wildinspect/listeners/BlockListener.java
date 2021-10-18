@@ -3,7 +3,7 @@ package com.bgsoftware.wildinspect.listeners;
 import com.bgsoftware.wildinspect.WildInspect;
 import com.bgsoftware.wildinspect.coreprotect.LookupType;
 import com.bgsoftware.wildinspect.utils.InspectPlayers;
-import com.bgsoftware.wildinspect.utils.ItemUtils;
+import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -31,14 +31,14 @@ public final class BlockListener implements Listener {
             plugin.getCoreProtect().performLookup(LookupType.BLOCK_LOOKUP, e.getPlayer(), e.getClickedBlock(), 0);
             InspectPlayers.setClickMode(e.getPlayer(), Action.LEFT_CLICK_BLOCK);
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (ItemUtils.isContainer(e.getClickedBlock().getType())) {
-                plugin.getCoreProtect().performLookup(LookupType.CHEST_TRANSACTIONS, e.getPlayer(), e.getClickedBlock(), 0);
+            if (e.getClickedBlock().getState() instanceof Container) {
+                plugin.getCoreProtect().performLookup(LookupType.CONTAINER_LOOKUP, e.getPlayer(), e.getClickedBlock(), 0);
                 InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             } else if (e.getItem() != null && e.getItem().getType().isBlock()) {
                 plugin.getCoreProtect().performLookup(LookupType.BLOCK_LOOKUP, e.getPlayer(), e.getClickedBlock().getRelative(e.getBlockFace()), 0);
                 InspectPlayers.setClickMode(e.getPlayer(), Action.LEFT_CLICK_BLOCK);
             } else {
-                plugin.getCoreProtect().performLookup(LookupType.INTERACTION_LOOKUP, e.getPlayer(), e.getClickedBlock(), 0);
+                plugin.getCoreProtect().performLookup(LookupType.CLICK_LOOKUP, e.getPlayer(), e.getClickedBlock(), 0);
                 InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             }
         }

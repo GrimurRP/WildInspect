@@ -26,11 +26,15 @@ history-limit:
   # Page limit. Limit the maximum amount of pages that can be viewed.
   page: -1
 
+# How many rows are shown per-page
+entries-per-page: 10
+
 # Cooldown interval between checks.
 cooldown: 5000
 
 # Should ops be hidden in the inspect mode?
 hide-ops: true
+hide-names: []
 
 # Set a permission to use the inspect mode of WildInspect.
 # If you wish to disable the feature, set it to ''.

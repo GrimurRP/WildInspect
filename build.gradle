@@ -9,7 +9,6 @@ plugins {
 
 group = project.property("group")
 version = project.property("version")
-sourceCompatibility = 16
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -42,7 +41,7 @@ dependencies {
     // Spigot jar
     compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
     // CoreProtect
-    compileOnly 'net.coreprotect:coreprotect:20.0'
+    compileOnly 'net.coreprotect:coreprotect:20.1'
     // Plugin Hooks
     compileOnly 'com.wasteofplastic:AcidIsland:latest'
     compileOnly 'com.wasteofplastic:ASkyblock:latest'

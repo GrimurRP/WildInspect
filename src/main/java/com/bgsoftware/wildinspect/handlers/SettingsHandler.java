@@ -7,6 +7,7 @@ import com.bgsoftware.wildinspect.config.ConfigComments;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public final class SettingsHandler {
@@ -17,7 +18,9 @@ public final class SettingsHandler {
     public final int historyLimitPage;
     public final long cooldown;
     public final boolean hideOps;
+    public final int entriesPerPage;
     public final String inspectPermission;
+    public final List<String> hiddenPlayers;
 
     public SettingsHandler(WildInspect plugin) {
         WildInspect.log("Loading configuration started...");
@@ -49,7 +52,9 @@ public final class SettingsHandler {
         historyLimitDate = cfg.getInt("history-limit.date", -1) == -1 ? Integer.MAX_VALUE : cfg.getInt("history-limit.date", -1);
         historyLimitPage = cfg.getInt("history-limit.page", -1) == -1 ? Integer.MAX_VALUE : cfg.getInt("history-limit.page", -1);
         cooldown = cfg.getLong("cooldown", 5000);
+        entriesPerPage = cfg.getInt("entries-per-page", 7);
         hideOps = cfg.getBoolean("hide-ops", true);
+        hiddenPlayers = cfg.getStringList("hide-players");
         inspectPermission = cfg.getString("inspect-permission", "");
 
         WildInspect.log(" - Found " + commands.size() + " commands in config.yml.");

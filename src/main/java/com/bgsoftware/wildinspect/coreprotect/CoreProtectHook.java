@@ -1,5 +1,6 @@
 package com.bgsoftware.wildinspect.coreprotect;
 
+import com.bgsoftware.wildinspect.WildInspect;
 import net.coreprotect.database.lookup.BlockLookup;
 import net.coreprotect.database.lookup.ChestTransactionLookup;
 import net.coreprotect.database.lookup.InteractionLookup;
@@ -13,26 +14,23 @@ import java.util.regex.Pattern;
 
 public final class CoreProtectHook {
 
-    private static final Pattern COMPONENT_PATTERN = Pattern.compile("<COMPONENT>(.*)\\|(.*)\\|(.*)</COMPONENT>");
+    private static final Pattern COMPONENT_PATTERN = Pattern.compile("<COMPONENT>(.*?)\\|(.*?)\\|(.*?)</COMPONENT>");
 
     public static String[] performInteractLookup(Statement statement, Player player, Block block, int page) {
-        return parseResult(InteractionLookup.performLookup(null, statement, block, player, 0, page, 7));
+        return parseResult(InteractionLookup.performLookup(null, statement, block, player, 0, page, WildInspect.getInstance().getSettings().entriesPerPage));
     }
 
     public static String[] performBlockLookup(Statement statement, Player player, BlockState blockState, int page) {
-        return parseResult(BlockLookup.performLookup(null, statement, blockState, player, 0, page, 7));
+        return parseResult(BlockLookup.performLookup(null, statement, blockState, player, 0, page, WildInspect.getInstance().getSettings().entriesPerPage));
     }
 
     public static String[] performChestLookup(Statement statement, Player player, Block block, int page) {
-        return parseResult(ChestTransactionLookup.performLookup(null, statement, block.getLocation(), player, page, 7, false));
+        return parseResult(ChestTransactionLookup.performLookup(null, statement, block.getLocation(), player, page, WildInspect.getInstance().getSettings().entriesPerPage, false));
     }
 
     private static String[] parseResult(String result) {
         Matcher matcher = COMPONENT_PATTERN.matcher(result);
-
-        if (matcher.find())
-            result = matcher.replaceAll("$3");
-
+        if (matcher.find()) result = matcher.replaceAll("$3");
         return result.split("\n");
     }
 

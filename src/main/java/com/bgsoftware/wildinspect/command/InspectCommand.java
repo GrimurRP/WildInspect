@@ -5,9 +5,9 @@ import com.bgsoftware.wildinspect.WildInspect;
 import com.bgsoftware.wildinspect.coreprotect.LookupType;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider;
 import com.bgsoftware.wildinspect.utils.InspectPlayers;
-import com.bgsoftware.wildinspect.utils.ItemUtils;
 import com.bgsoftware.wildinspect.utils.StringUtils;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -93,10 +93,10 @@ public final class InspectCommand implements Listener {
             if (clickMode == Action.LEFT_CLICK_BLOCK) {
                 plugin.getCoreProtect().performLookup(LookupType.BLOCK_LOOKUP, pl, bl, page);
             } else if (clickMode == Action.RIGHT_CLICK_BLOCK) {
-                if (ItemUtils.isContainer(bl.getType())) {
-                    plugin.getCoreProtect().performLookup(LookupType.CHEST_TRANSACTIONS, pl, bl, page);
+                if (bl.getState() instanceof Container) {
+                    plugin.getCoreProtect().performLookup(LookupType.CONTAINER_LOOKUP, pl, bl, page);
                 } else {
-                    plugin.getCoreProtect().performLookup(LookupType.INTERACTION_LOOKUP, pl, bl, page);
+                    plugin.getCoreProtect().performLookup(LookupType.CLICK_LOOKUP, pl, bl, page);
                 }
                 InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             }
