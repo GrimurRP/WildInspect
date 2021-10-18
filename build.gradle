@@ -17,6 +17,7 @@ repositories {
     mavenCentral()
     maven { url = 'https://repo.codemc.io/repository/nms/' }
     maven { url = 'https://repo.codemc.io/repository/maven-public/' }
+    maven { url = 'https://maven.playpro.com' }
     maven { url = 'https://mvn.intellectualsites.com/content/groups/public/' }
     maven { url 'https://repo.bg-software.com/repository/api/' }
     maven { url 'https://repo.bg-software.com/repository/public-libs/' }
@@ -24,9 +25,9 @@ repositories {
 
 dependencies {
     // Spigot jar
-    compileOnly 'org.spigotmc:spigot:1.17-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
     // CoreProtect
-    compileOnly 'net.coreprotect:CoreProtect-6:latest'
+    compileOnly 'net.coreprotect:coreprotect:20.0'
     // Plugin Hooks
     compileOnly 'com.wasteofplastic:AcidIsland:latest'
     compileOnly 'com.wasteofplastic:ASkyblock:latest'
@@ -40,7 +41,7 @@ dependencies {
     compileOnly 'com.bgsoftware:SuperiorSkyblockAPI:latest'
     compileOnly 'com.palmergames:Towny:latest'
     compileOnly 'com.stefthedev:Villages:latest'
-    compileOnly 'com.plotsquared:PlotSquared-Core:5.13.3'
+    compileOnly 'com.plotsquared:PlotSquared-Core:6.1.2'
 }
 
 processResources {
