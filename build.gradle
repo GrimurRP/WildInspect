@@ -4,12 +4,12 @@ plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
-    id "com.github.johnrengelman.shadow" version('6.1.0')
+    id "com.github.johnrengelman.shadow" version('7.1.0')
 }
 
 group = project.property("group")
 version = project.property("version")
-sourceCompatibility = project.property("sourceversion")
+sourceCompatibility = 16
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -18,9 +18,24 @@ repositories {
     maven { url = 'https://repo.codemc.io/repository/nms/' }
     maven { url = 'https://repo.codemc.io/repository/maven-public/' }
     maven { url = 'https://maven.playpro.com' }
-    maven { url = 'https://mvn.intellectualsites.com/content/groups/public/' }
-    maven { url 'https://repo.bg-software.com/repository/api/' }
-    maven { url 'https://repo.bg-software.com/repository/public-libs/' }
+    maven { url = 'https://repo.bg-software.com/repository/api/' }
+    maven { url = 'https://repo.bg-software.com/repository/public-libs/' }
+    maven {
+        name = "IntellectualSites Releases"
+        url = uri("https://mvn.intellectualsites.com/content/repositories/releases/")
+    }
+    maven {
+        name = "IntellectualSites Snapshots"
+        url = uri("https://mvn.intellectualsites.com/content/repositories/snapshots/")
+    }
+    maven {
+        name = "EngineHub"
+        url = uri("https://maven.enginehub.org/repo/")
+    }
+    maven {
+        name = "OSS Sonatype"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
 }
 
 dependencies {

@@ -5,8 +5,6 @@ import com.plotsquared.core.plot.Plot;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 public final class ClaimsProvider_PlotSquared implements ClaimsProvider {
 
     @Override
@@ -21,9 +19,9 @@ public final class ClaimsProvider_PlotSquared implements ClaimsProvider {
 
     @Override
     public boolean hasRegionAccess(Player player, Location location) {
-        com.plotsquared.core.location.Location loc = new com.plotsquared.core.location.Location(
-                Objects.requireNonNull(location.getWorld()).getName(),
-                location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        com.plotsquared.core.location.Location loc = com.plotsquared.core.location.Location.at(
+                location.getWorld().getName(),
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), 0F, 0F);
         Plot plot = PlotSquared.get().getPlotAreaManager().getPlotArea(loc).getOwnedPlot(loc);
         if (plot == null) return false;
         return plot.isAdded(player.getUniqueId()) || plot.isOwner(player.getUniqueId());
