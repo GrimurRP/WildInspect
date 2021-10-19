@@ -19,14 +19,9 @@ repositories {
     maven { url = 'https://maven.playpro.com' }
     maven { url = 'https://repo.bg-software.com/repository/api/' }
     maven { url = 'https://repo.bg-software.com/repository/public-libs/' }
-    maven {
-        name = "IntellectualSites Releases"
-        url = uri("https://mvn.intellectualsites.com/content/repositories/releases/")
-    }
-    maven {
-        name = "IntellectualSites Snapshots"
-        url = uri("https://mvn.intellectualsites.com/content/repositories/snapshots/")
-    }
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://mvn.intellectualsites.com/content/repositories/releases/' }
+    maven { url = 'https://mvn.intellectualsites.com/content/repositories/snapshots/' }
 }
 
 dependencies {
@@ -49,7 +44,7 @@ dependencies {
     compileOnly 'com.massivecraft:Factions:latest'
     compileOnly 'com.massivecraft:MassiveCore:latest'
     compileOnly 'com.bgsoftware:SuperiorSkyblockAPI:latest'
-    compileOnly 'com.palmergames:Towny:latest'
+    compileOnly 'com.github.TownyAdvanced:Towny:0.97.2.8'
     compileOnly 'com.stefthedev:Villages:latest'
     compileOnly 'com.plotsquared:PlotSquared-Core:6.1.2', {
         exclude group: 'org.spigotmc'
