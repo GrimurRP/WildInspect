@@ -1,12 +1,12 @@
 package com.bgsoftware.wildinspect.command;
 
-import com.bgsoftware.wildinspect.Locale;
-import com.bgsoftware.wildinspect.handlers.SettingsHandler;
-import org.bukkit.ChatColor;
+import com.bgsoftware.wildinspect.config.Config;
+import com.bgsoftware.wildinspect.config.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import pro.dracarys.configlib.ConfigLib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +15,18 @@ public final class ReloadCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!sender.hasPermission("wildinspect.reload")) {
-            Locale.NO_PERMISSION.send(sender);
+        if (!sender.hasPermission(Config.PERM_RELOAD.getString())) {
+            sender.sendMessage(Message.PREFIX.getMessage() + Message.NO_PERMISSION.getMessage(Config.PERM_RELOAD.getString()));
             return false;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            new Thread(() -> {
-                SettingsHandler.reload();
-                Locale.reload();
-                Locale.RELOAD_SUCCESS.send(sender);
-            }).start();
+            ConfigLib.initAll();
+            sender.sendMessage(Message.PREFIX.getMessage() + Message.RELOAD_SUCCESS.getMessage());
             return false;
         }
 
-        sender.sendMessage(ChatColor.RED + "Usage: /wildinspect reload");
+        sender.sendMessage(Message.PREFIX.getMessage() + Message.COMMAND_USAGE.getMessage("wildinspect", "reload"));
         return false;
     }
 

@@ -1,6 +1,7 @@
 package com.bgsoftware.wildinspect.utils;
 
 import com.bgsoftware.wildinspect.WildInspect;
+import com.bgsoftware.wildinspect.config.Config;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
@@ -74,7 +75,7 @@ public final class InspectPlayers {
     }
 
     public static void setCooldown(OfflinePlayer pl) {
-        cooldownPlayers.put(pl.getUniqueId(), System.currentTimeMillis() + plugin.getSettings().cooldown);
+        cooldownPlayers.put(pl.getUniqueId(), System.currentTimeMillis() + Config.COOLDOWN.getInt());
     }
 
 }

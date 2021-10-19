@@ -2,9 +2,10 @@ package com.bgsoftware.wildinspect;
 
 import com.bgsoftware.wildinspect.command.InspectCommand;
 import com.bgsoftware.wildinspect.command.ReloadCommand;
+import com.bgsoftware.wildinspect.config.file.ConfigFile;
+import com.bgsoftware.wildinspect.config.file.MessageFile;
 import com.bgsoftware.wildinspect.coreprotect.CoreProtect;
 import com.bgsoftware.wildinspect.handlers.HooksHandler;
-import com.bgsoftware.wildinspect.handlers.SettingsHandler;
 import com.bgsoftware.wildinspect.listeners.BlockListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -12,12 +13,12 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import pro.dracarys.configlib.ConfigLib;
 
 public final class WildInspect extends JavaPlugin {
 
     private static WildInspect plugin;
 
-    private SettingsHandler settingsHandler;
     private HooksHandler hooksHandler;
 
     private CoreProtect coreProtect;
@@ -29,21 +30,18 @@ public final class WildInspect extends JavaPlugin {
         plugin = this;
 
         Bukkit.getScheduler().runTask(this, () -> {
-            log("******** ENABLE START ********");
-
             checkServerVersion();
 
-            registerListeners(new InspectCommand(this), new BlockListener(this));
+            ConfigLib.setPlugin(this);
+            ConfigLib.addFile(new ConfigFile());
+            ConfigLib.addFile(new MessageFile());
+            ConfigLib.initAll();
 
+            registerListeners(new InspectCommand(this), new BlockListener(this));
             registerCommand("wildinspect", new ReloadCommand());
 
-            settingsHandler = new SettingsHandler(this);
             hooksHandler = new HooksHandler(this);
             coreProtect = new CoreProtect(this);
-
-            Locale.reload();
-
-            log("******** ENABLE DONE ********");
         });
     }
 
@@ -76,14 +74,6 @@ public final class WildInspect extends JavaPlugin {
 
     public static int getServerVersion() {
         return ver;
-    }
-
-    public SettingsHandler getSettings() {
-        return settingsHandler;
-    }
-
-    public void setSettings(SettingsHandler settingsHandler) {
-        this.settingsHandler = settingsHandler;
     }
 
     public HooksHandler getHooksHandler() {

@@ -1,7 +1,8 @@
 package com.bgsoftware.wildinspect.command;
 
-import com.bgsoftware.wildinspect.Locale;
 import com.bgsoftware.wildinspect.WildInspect;
+import com.bgsoftware.wildinspect.config.Config;
+import com.bgsoftware.wildinspect.config.Message;
 import com.bgsoftware.wildinspect.coreprotect.LookupType;
 import com.bgsoftware.wildinspect.hooks.ClaimsProvider;
 import com.bgsoftware.wildinspect.utils.InspectPlayers;
@@ -15,8 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.Set;
-
 @SuppressWarnings("unused")
 public final class InspectCommand implements Listener {
 
@@ -28,9 +27,8 @@ public final class InspectCommand implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-        Set<String> cmdLabels = plugin.getSettings().commands;
         String cmdLabel = "";
-        for (String label : cmdLabels) {
+        for (String label : Config.COMMANDS.getStringList()) {
             if (e.getMessage().equalsIgnoreCase("/" + label) || e.getMessage().startsWith("/" + label + " ")) {
                 cmdLabel = label;
                 break;
@@ -45,22 +43,21 @@ public final class InspectCommand implements Listener {
         String label = e.getMessage().split(" ")[0];
         String[] args = e.getMessage().replace(label + " ", "").split(" ");
         Player pl = e.getPlayer();
-
-        if (plugin.getSettings().inspectPermission != null
-                && !plugin.getSettings().inspectPermission.isEmpty()
-                && !e.getPlayer().hasPermission(plugin.getSettings().inspectPermission)) {
-            Locale.NO_PERMISSION.send(e.getPlayer());
+        String inspectPermission = Config.PERM_INSPECT.getString();
+        if (!inspectPermission.isEmpty()
+                && !pl.hasPermission(inspectPermission)) {
+            pl.sendMessage(Message.PREFIX.getMessage() + Message.NO_PERMISSION.getMessage(inspectPermission));
             return;
         }
 
         if (args.length > 2) {
-            Locale.COMMAND_USAGE.send(pl, cmdLabel, "[page]");
+            pl.sendMessage(Message.PREFIX.getMessage() + Message.COMMAND_USAGE.getMessage(cmdLabel, "page"));
             return;
         }
 
         if (args.length == 2) {
             if (!InspectPlayers.isInspectEnabled(pl) || !InspectPlayers.hasBlock(pl)) {
-                Locale.NO_BLOCK_SELECTED.send(pl, label + " " + args[0]);
+                pl.sendMessage(Message.PREFIX.getMessage() + Message.NO_BLOCK_SELECTED.getMessage(label + " " + args[0]));
                 return;
             }
 
@@ -69,20 +66,20 @@ public final class InspectCommand implements Listener {
             try {
                 page = Integer.parseInt(args[1]);
             } catch (IllegalArgumentException ex) {
-                Locale.SPECIFY_PAGE.send(pl);
+                pl.sendMessage(Message.PREFIX.getMessage() + Message.SPECIFY_PAGE.getMessage());
                 return;
             }
 
             if (page < 1) {
-                Locale.SPECIFY_PAGE.send(pl);
+                pl.sendMessage(Message.PREFIX.getMessage() + Message.SPECIFY_PAGE.getMessage());
                 return;
             }
 
             Block bl = InspectPlayers.getBlock(pl);
 
             ClaimsProvider.ClaimPlugin claimPlugin = plugin.getHooksHandler().getRegionAt(pl, bl.getLocation());
-            if (!plugin.getHooksHandler().hasRole(claimPlugin, pl, bl.getLocation(), plugin.getSettings().requiredRoles)) {
-                Locale.REQUIRED_ROLE.send(pl, StringUtils.format(plugin.getSettings().requiredRoles));
+            if (!plugin.getHooksHandler().hasRole(claimPlugin, pl, bl.getLocation(), Config.REQUIRED_ROLES.getStrings())) {
+                pl.sendMessage(Message.PREFIX.getMessage() + Message.REQUIRED_ROLE.getMessage(StringUtils.format(Config.REQUIRED_ROLES.getStrings())));
                 return;
             }
 
@@ -100,16 +97,16 @@ public final class InspectCommand implements Listener {
                 }
                 InspectPlayers.setClickMode(e.getPlayer(), Action.RIGHT_CLICK_BLOCK);
             }
-
             return;
         }
 
         if (InspectPlayers.isInspectEnabled(pl)) {
             InspectPlayers.disableInspectMode(pl);
-            Locale.INSPECTOR_OFF.send(pl);
+            pl.sendMessage(Message.PREFIX.getMessage() + Message.INSPECTOR_OFF.getMessage());
+            ;
         } else {
             InspectPlayers.enableInspectMode(pl);
-            Locale.INSPECTOR_ON.send(pl);
+            pl.sendMessage(Message.PREFIX.getMessage() + Message.INSPECTOR_ON.getMessage());
         }
 
 
