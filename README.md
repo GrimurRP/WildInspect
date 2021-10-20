@@ -1,6 +1,10 @@
 <h2 align="center">WildInspect Debloated Fork</h2>
 <br>
 
+Only works on JAVA 16+
+
+Support is provided only for the latest spigot version available.
+
 ## Compiling
 
 
