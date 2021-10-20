@@ -103,7 +103,6 @@ public final class InspectCommand implements Listener {
         if (InspectPlayers.isInspectEnabled(pl)) {
             InspectPlayers.disableInspectMode(pl);
             pl.sendMessage(Message.PREFIX.getMessage() + Message.INSPECTOR_OFF.getMessage());
-            ;
         } else {
             InspectPlayers.enableInspectMode(pl);
             pl.sendMessage(Message.PREFIX.getMessage() + Message.INSPECTOR_ON.getMessage());
