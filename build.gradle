@@ -14,20 +14,20 @@ compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenLocal()
     mavenCentral()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url = 'https://repo.codemc.io/repository/nms/' }
     maven { url = 'https://repo.codemc.io/repository/maven-public/' }
     maven { url = 'https://maven.playpro.com' }
     maven { url = 'https://repo.bg-software.com/repository/api/' }
     maven { url = 'https://repo.bg-software.com/repository/public-libs/' }
     maven { url = 'https://jitpack.io' }
-    maven { url = 'https://mvn.intellectualsites.com/content/repositories/releases/' }
-    maven { url = 'https://mvn.intellectualsites.com/content/repositories/snapshots/' }
 }
 
 dependencies {
     implementation 'com.github.Drc-DEV:configlib:1.9.2'
     // Spigot jar
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     // CoreProtect
     compileOnly 'net.coreprotect:coreprotect:20.1', {
         exclude group: 'org.spigotmc'
@@ -43,16 +43,10 @@ dependencies {
     compileOnly 'me.ryanhamshire:GriefPrevention:latest'
     compileOnly 'com.massivecraft:Factions:latest'
     compileOnly 'com.massivecraft:MassiveCore:latest'
-    compileOnly 'com.bgsoftware:SuperiorSkyblockAPI:latest'
     compileOnly 'com.github.TownyAdvanced:Towny:0.97.2.8'
     compileOnly 'com.stefthedev:Villages:latest'
-    compileOnly 'com.plotsquared:PlotSquared-Core:6.1.2', {
-        exclude group: 'org.spigotmc'
-        exclude group: 'org.bukkit'
-        exclude group: 'net.kyori'
-        exclude group: 'org.khelekore'
-        exclude group: 'com.sk89q.worldedit'
-    }
+    compileOnly 'com.plotsquared:PlotSquared-Core:6.6.1'
+    compileOnly 'com.plotsquared:PlotSquared-Bukkit:6.6.1', { transitive = false }
 }
 
 processResources {

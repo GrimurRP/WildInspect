@@ -79,11 +79,6 @@ public final class HooksHandler {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.GRIEF_PREVENTION, new ClaimsProvider_GriefPrevention());
             WildInspect.log(" - Using GriefPrevention as ClaimsProvider.");
         }
-        //Checks if SuperiorSkyblock is installed
-        if (Bukkit.getPluginManager().isPluginEnabled("SuperiorSkyblock2")) {
-            claimsProviders.put(ClaimsProvider.ClaimPlugin.SUPERIOR_SKYBLOCK, new ClaimsProvider_SuperiorSkyblock());
-            WildInspect.log(" - Using SuperiorSkyblock as ClaimsProvider.");
-        }
         //Checks if Villages is installed
         if (Bukkit.getPluginManager().isPluginEnabled("Villages")) {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.VILLAGES, new ClaimsProvider_Villages());
