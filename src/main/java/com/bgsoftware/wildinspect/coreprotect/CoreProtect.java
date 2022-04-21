@@ -22,7 +22,7 @@ public final class CoreProtect {
 
     private static final Pattern NO_DATA_PATTERN = Pattern.compile("CoreProtect - No (.*) found for (.*)\\.");
     private static final Pattern DATA_HEADER_PATTERN = Pattern.compile("----- (.*) ----- \\(x(.*)/y(.*)/z(.*)\\)");
-    private static final Pattern DATA_LINE_PATTERN = Pattern.compile("(.*) - (.\\S*) (.*) (.*)\\.");
+    private static final Pattern DATA_LINE_PATTERN = Pattern.compile("(.*) (-|\\+) (.\\S*) (.*) (.*)\\.");
     private static final Pattern DATA_FOOTER_PATTERN = Pattern.compile("(.*) ([0-9]+)\\/([0-9]+)(.*) \"(.*)\"\\.");
 
     private final WildInspect plugin;
