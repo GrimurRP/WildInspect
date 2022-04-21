@@ -40,6 +40,8 @@ public final class WildInspect extends JavaPlugin {
             registerListeners(new InspectCommand(this), new BlockListener(this));
             registerCommand("wildinspect", new ReloadCommand());
 
+            ConfigLib.printPluginInfo();
+
             hooksHandler = new HooksHandler(this);
             coreProtect = new CoreProtect(this);
         });

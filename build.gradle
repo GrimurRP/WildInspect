@@ -21,11 +21,12 @@ repositories {
     maven { url = 'https://maven.playpro.com' }
     maven { url = 'https://repo.bg-software.com/repository/api/' }
     maven { url = 'https://repo.bg-software.com/repository/public-libs/' }
+    maven { url = 'https://repo.glaremasters.me/repository/towny/' }
     maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'com.github.Drc-DEV:configlib:1.9.2'
+    implementation 'com.github.Drc-DEV:configlib:1.9.3'
     // Spigot jar
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
     // CoreProtect
@@ -43,10 +44,10 @@ dependencies {
     compileOnly 'me.ryanhamshire:GriefPrevention:latest'
     compileOnly 'com.massivecraft:Factions:latest'
     compileOnly 'com.massivecraft:MassiveCore:latest'
-    compileOnly 'com.github.TownyAdvanced:Towny:0.97.2.8'
+    compileOnly 'com.palmergames.bukkit.towny:towny:0.98.0.0'
     compileOnly 'com.stefthedev:Villages:latest'
-    compileOnly 'com.plotsquared:PlotSquared-Core:6.6.1'
-    compileOnly 'com.plotsquared:PlotSquared-Bukkit:6.6.1', { transitive = false }
+    compileOnly 'com.plotsquared:PlotSquared-Core:6.6.2'
+    compileOnly 'com.plotsquared:PlotSquared-Bukkit:6.6.2', { transitive = false }
 }
 
 processResources {
