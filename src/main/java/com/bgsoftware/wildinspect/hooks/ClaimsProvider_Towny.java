@@ -19,7 +19,7 @@ public final class ClaimsProvider_Towny implements ClaimsProvider {
     @Override
     public boolean hasRole(Player player, Location location, String... roles) {
         try {
-            Resident resident = TownyAPI.getInstance().getResident(player.getName());
+            Resident resident = TownyAPI.getInstance().getResident(player.getUniqueId());
             if (resident == null) return false;
             return Arrays.stream(roles).anyMatch(resident::hasTownRank) || (Arrays.asList(roles).contains("MAYOR") && resident.isMayor());
         } catch (Exception ignored) {
@@ -32,7 +32,7 @@ public final class ClaimsProvider_Towny implements ClaimsProvider {
     public boolean hasRegionAccess(Player player, Location location) {
         try {
             TownBlock block = WorldCoord.parseWorldCoord(location).getTownBlock();
-            Resident resident = TownyAPI.getInstance().getResident(player.getName());
+            Resident resident = TownyAPI.getInstance().getResident(player.getUniqueId());
             if (resident == null) return false;
             return resident.hasTown() && resident.getTown().hasTownBlock(block);
         } catch (Exception ignored) {
