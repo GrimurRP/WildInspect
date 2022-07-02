@@ -26,11 +26,11 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Drc-DEV:configlib:1.9.3'
+    implementation 'com.github.Drc-DEV:configlib:1.9.5'
     // Spigot jar
-    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
     // CoreProtect
-    compileOnly 'net.coreprotect:coreprotect:20.1', {
+    compileOnly 'net.coreprotect:coreprotect:20.4', {
         exclude group: 'org.spigotmc'
         exclude group: 'org.bukkit'
     }
