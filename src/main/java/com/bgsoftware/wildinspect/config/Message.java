@@ -83,7 +83,7 @@ public enum Message {
     }
 
     public void setMessages(List<String> list) {
-        this.messages = list.toArray(color(new String[0]));
+        this.messages = color(list.toArray(new String[0]));
     }
 
     public void setMessage(String message) {

@@ -19,6 +19,7 @@ repositories {
     maven { url = 'https://repo.codemc.io/repository/nms/' }
     maven { url = 'https://repo.codemc.io/repository/maven-public/' }
     maven { url = 'https://maven.playpro.com' }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://repo.bg-software.com/repository/api/' }
     maven { url = 'https://repo.bg-software.com/repository/public-libs/' }
     maven { url = 'https://repo.glaremasters.me/repository/towny/' }
@@ -28,7 +29,7 @@ repositories {
 dependencies {
     implementation 'com.github.Drc-DEV:configlib:1.9.5'
     // Spigot jar
-    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
     // CoreProtect
     compileOnly 'net.coreprotect:coreprotect:20.4', {
         exclude group: 'org.spigotmc'
@@ -46,8 +47,9 @@ dependencies {
     compileOnly 'com.massivecraft:MassiveCore:latest'
     compileOnly 'com.palmergames.bukkit.towny:towny:0.98.0.0'
     compileOnly 'com.stefthedev:Villages:latest'
-    compileOnly 'com.plotsquared:PlotSquared-Core:6.6.2'
-    compileOnly 'com.plotsquared:PlotSquared-Bukkit:6.6.2', { transitive = false }
+    implementation(platform('com.intellectualsites.bom:bom-1.18.x:1.21'))
+    compileOnly 'com.plotsquared:PlotSquared-Core:6.10.5'
+    compileOnly 'com.plotsquared:PlotSquared-Bukkit:6.10.5', { transitive = false }
 }
 
 processResources {
