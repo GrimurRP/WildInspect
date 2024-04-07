@@ -84,6 +84,11 @@ public final class HooksHandler {
             claimsProviders.put(ClaimsProvider.ClaimPlugin.VILLAGES, new ClaimsProvider_Villages());
             WildInspect.log(" - Using Villages as ClaimsProvider.");
         }
+        //Checks if Nodes is installed
+        if (Bukkit.getPluginManager().isPluginEnabled("nodes")) {
+            claimsProviders.put(ClaimsProvider.ClaimPlugin.NODES, new ClaimsProvider_Nodes());
+            WildInspect.log(" - Using Nodes as ClaimsProvider.");
+        }
         WildInspect.log("Loading providers done (Took " + (System.currentTimeMillis() - startTime) + "ms)");
     }
 

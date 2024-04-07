@@ -24,6 +24,7 @@ public interface ClaimsProvider {
         TOWNY,
         VILLAGES,
         PLOTSQUARED,
+        NODES,
 
         NONE,
         DEFAULT
